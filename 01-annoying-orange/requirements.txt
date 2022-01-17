@@ -1,0 +1,8 @@
+# Need to install cmake in order to install dlib.
+# Use `brew install cmake` or add cmake to requirements.txt
+
+opencv-python
+dlib
+imutils
+numpy
+shapely
