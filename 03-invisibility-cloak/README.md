@@ -1,0 +1,3 @@
+
+# Before run...
+https://github.com/ayoolaolafenwa/PixelLib/releases/download/0.2.0/pointrend_resnet50.pkl 을 다운로드 받아 segmentation_based 디렉토리에 복사.

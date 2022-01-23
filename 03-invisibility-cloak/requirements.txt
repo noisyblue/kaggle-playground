@@ -1,0 +1,7 @@
+opencv-python
+numpy
+torch==1.9.1
+torchvision==0.10.0
+cudatoolkit==11.3
+pycocotools
+pixellib==0.7.1
