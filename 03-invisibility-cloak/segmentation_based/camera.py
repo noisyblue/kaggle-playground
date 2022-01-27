@@ -1,6 +1,6 @@
 import abc
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 import cv2
 
@@ -8,6 +8,10 @@ import cv2
 class CameraFrameHandler:
     @abc.abstractmethod
     def on_frame(self, frame) -> Any:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def on_stop(self):
         raise NotImplementedError()
 
 
@@ -18,6 +22,7 @@ class CamVideoCaptureConfig:
 
     frame_handler: CameraFrameHandler
     cam_index: int = 0
+    file_name: Optional[str] = None
     window_name: str = DEFAULT_WINDOW_NAME
     quit_key_code: int = DEFAULT_QUIT_KEY_CODE
 
@@ -33,8 +38,12 @@ class CamVideoCapture:
             print("Camera capture already started. Ignoring...")
             return
 
-        print("Starting camera video capture...")
-        self.videoCapture = cv2.VideoCapture(self.config.cam_index)
+        if self.config.file_name is not None:
+            print("Starting video file streaming...")
+            self.videoCapture = cv2.VideoCapture(self.config.file_name)
+        else:
+            print("Starting camera video capture...")
+            self.videoCapture = cv2.VideoCapture(self.config.cam_index)
         self.is_started = True
 
         cv2.namedWindow(self.config.window_name, cv2.WINDOW_NORMAL)
@@ -47,8 +56,12 @@ class CamVideoCapture:
             ret, img = self.videoCapture.read()
 
             if not ret or img is None:
-                print("Can't receive frame. Skipping frame loop...")
-                continue
+                if self.config.file_name is None:
+                    print("Can't receive frame. Skipping frame loop...")
+                    continue
+                else:
+                    print("Can't receive frame. Stopping frame loop...")
+                    break
 
             processed_frame = self.config.frame_handler.on_frame(img)
             cv2.imshow(self.config.window_name, processed_frame if processed_frame is not None else img)
@@ -67,5 +80,7 @@ class CamVideoCapture:
         self.videoCapture.release()
         self.videoCapture = None
         self.is_started = False
+
+        self.config.frame_handler.on_stop()
 
         cv2.destroyWindow(self.config.window_name)
