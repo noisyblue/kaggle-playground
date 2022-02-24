@@ -3,7 +3,7 @@
 이 구현은 아래 영상의 구현에 기반합니다.<br/>
 https://www.youtube.com/watch?v=J01pGSPOQTk
 
-Summary: https://www.notion.so/noisyblue/Week6-f706ae9154584f54bbc45e6534b998b4
+Summary: https://noisyblue.notion.site/Week6-f706ae9154584f54bbc45e6534b998b4
 
 여기 있는 코드는 파이썬 3.9.9 에서 테스트 됐습니다.
 
